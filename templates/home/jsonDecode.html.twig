@@ -1,0 +1,44 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Home Json decode{% endblock %}
+
+{% block body %}
+    <h1 class="container my-5">TEST FETCH DATA</h1>    
+    {# dataDecoded|json_encode #}
+    <table class="table table-hover my-4">
+        <thead>
+             <tr>
+                <th scope="col">id</th>
+                <th scope="col">Crée le</th>
+                <th scope="col">name</th>
+                <th scope="col">firstName</th>
+                <th scope="col">lastName</th>
+                <th scope="col">address</th>
+                <th scope="col">profile</th>
+                <th scope="col">company</th>
+                <th scope="col">email</th>
+                <th scope="col">orders</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for dataDecode in dataDecoded %}
+            <tr>
+                <th scope="row">{{ dataDecode.id }}</th>
+                <td>{{ dataDecode.createdAt|date("m/d/Y") }}</td>
+                <td>{{ dataDecode.name }}</td>
+                <td>{{ dataDecode.firstName }}</td>
+                <td>{{ dataDecode.lastName }}</td>
+                <td>{{ dataDecode.address|json_encode }}</td>
+                <td>{{ dataDecode.profile|json_encode }}</td>
+                <td>{{ dataDecode.company|json_encode }}</td>
+                {% if dataDecode.email is defined %}
+                <td>{{ dataDecode.email }}</td>
+                {% else %}
+                <td></td>
+                {% endif %}
+                <td>{{ dataDecode.orders|json_encode }}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}
