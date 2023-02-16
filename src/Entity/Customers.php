@@ -56,6 +56,11 @@ class Customers
     private $company;
 
     /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $email;
+
+    /**
      * @ORM\Column(type="datetime_immutable", nullable=true)
      */
     private $createdAt;
