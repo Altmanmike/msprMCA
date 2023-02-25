@@ -65,6 +65,11 @@ class Customers
      */
     private $createdAt;
 
+    /**
+     * @ORM\Column(type="array", nullable=true)
+     */
+    private $orders = [];
+
     public function getId(): ?int
     {
         return $this->id;
@@ -162,6 +167,18 @@ class Customers
     public function setCreatedAt(?\DateTimeImmutable $createdAt): self
     {
         $this->createdAt = $createdAt;
+
+        return $this;
+    }
+
+    public function getOrders(): ?array
+    {
+        return $this->orders;
+    }
+
+    public function setOrders(?array $orders): self
+    {
+        $this->orders = $orders;
 
         return $this;
     }

@@ -16,9 +16,12 @@ class HomeController extends AbstractController
         ]);
     }
 
-    #[Route('/jsonDecode', name: 'app_parse')]
+    #[Route('/json', name: 'app_jsonDecode')]
     public function jsonDecode(): Response
     {
+        /* ************************************** */
+        /* * JUSTE POUR VISUALISER LES DONNEES ** */
+        /* ************************************** */
         //$json = file_get_contents("/test_API_plateform/API-Platform/public/js/customers.json");
         $json = file_get_contents("js/customers.json");
         //dd($json);
@@ -28,5 +31,5 @@ class HomeController extends AbstractController
             'controller_name' => 'HomeController',
             'dataDecoded' => $dataDecoded  
         ]);
-    }
+    } 
 }
