@@ -46,7 +46,11 @@
 
             // Boucle sur chaque ligne du json, pour chaque Customer..
             foreach ($dataDecoded as $dataDecode):
-                { 
+                {
+                    if(empty($dataDecode->email)) {
+                        $dataDecode->email = '';
+                    }
+                    //dd(empty($dataDecode->email));
                     //dd(json_encode($dataDecode->address));
                     // Pour chacunes des donnnées i.e. chacun des customers, on doit faire un insert dans notre bdd dans une table Customers:                                  
                     $sthC->execute([ $dataDecode->id, $dataDecode->name, $dataDecode->username, $dataDecode->lastName, $dataDecode->firstName, json_encode($dataDecode->address), json_encode($dataDecode->profile), json_encode($dataDecode->company), json_encode($dataDecode->orders), $dataDecode->email, $dataDecode->createdAt ]);
