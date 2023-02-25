@@ -33,7 +33,7 @@ class Products
     /**
      * @ORM\Column(type="integer", nullable=true)
      */
-    private $stocks;
+    private $stock;
 
     /**
      * @ORM\Column(type="integer")
@@ -74,14 +74,14 @@ class Products
         return $this;
     }
 
-    public function getStocks(): ?int
+    public function getStock(): ?int
     {
-        return $this->stocks;
+        return $this->stock;
     }
 
-    public function setStocks(?int $stocks): self
+    public function setStock(?int $stock): self
     {
-        $this->stocks = $stocks;
+        $this->stock = $stock;
 
         return $this;
     }

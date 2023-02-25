@@ -31,7 +31,7 @@
                 $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
                 // Préparons la query une seule fois pour chaque insertion, dans chacune des tables: 
-                $sqlCustomers = "INSERT INTO `customers` (`id`, `name`, `username`, `lastname`, `firstname`, `address`, `profile`, `company`, `orders`, `created_at`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+                $sqlCustomers = "INSERT INTO `customers` (`id`, `name`, `username`, `lastname`, `firstname`, `address`, `profile`, `company`, `orders`, `email`, `created_at`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
                 $sthC = $pdo->prepare($sqlCustomers);
 
                 $sqlOrders = "INSERT INTO `orders` (`id`, `customer_id`, `created_at`) VALUES (?, ?, ?)";
@@ -49,7 +49,7 @@
                 { 
                     //dd(json_encode($dataDecode->address));
                     // Pour chacunes des donnnées i.e. chacun des customers, on doit faire un insert dans notre bdd dans une table Customers:                                  
-                    $sthC->execute([ $dataDecode->id, $dataDecode->name, $dataDecode->username, $dataDecode->lastName, $dataDecode->firstName, json_encode($dataDecode->address), json_encode($dataDecode->profile), json_encode($dataDecode->company), json_encode($dataDecode->orders), $dataDecode->createdAt ]);
+                    $sthC->execute([ $dataDecode->id, $dataDecode->name, $dataDecode->username, $dataDecode->lastName, $dataDecode->firstName, json_encode($dataDecode->address), json_encode($dataDecode->profile), json_encode($dataDecode->company), json_encode($dataDecode->orders), $dataDecode->email, $dataDecode->createdAt ]);
 
                     // On récupère les commandes du client pour les insérer aussi dans notre bdd dans une table Orders:
                     $dataDecodedOrders = $dataDecode->orders;
