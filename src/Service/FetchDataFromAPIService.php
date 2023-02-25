@@ -34,7 +34,7 @@
                 $sqlCustomers = "INSERT INTO customers (`id`, `name`, `username`, `lastname`, `firstname`, `address`, `profile`, `company`, `orders`, `created_at`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
                 $sthC = $pdo->prepare($sqlCustomers);
 
-                $sqlOrders = "INSERT INTO orders (`id`, `customer_id`, `createdAt`) VALUES (?, ?, ?)";
+                $sqlOrders = "INSERT INTO orders (`id`, `customer_id`, `created_at`) VALUES (?, ?, ?)";
                 $sthO = $pdo->prepare($sqlOrders);
 
                 $sqlProducts = "INSERT INTO products (`id`, `name`, `order_id`, `stock`, `details`, `created_at`) VALUES (?, ?, ?, ?, ?, ?)";
