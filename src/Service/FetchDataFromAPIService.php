@@ -31,13 +31,13 @@
                 $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
                 // Préparons la query une seule fois pour chaque insertion, dans chacune des tables: 
-                $sqlCustomers = "INSERT INTO customers (`id`, `name`, `username`, `lastname`, `firstname`, `address`, `profile`, `company`, `orders`, `createdAt`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+                $sqlCustomers = "INSERT INTO customers (`id`, `name`, `username`, `lastname`, `firstname`, `address`, `profile`, `company`, `orders`, `created_at`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
                 $sthC = $pdo->prepare($sqlCustomers);
 
-                $sqlOrders = "INSERT INTO orders (`id`, `customerId`, `createdAt`) VALUES (?, ?, ?)";
+                $sqlOrders = "INSERT INTO orders (`id`, `customer_id`, `createdAt`) VALUES (?, ?, ?)";
                 $sthO = $pdo->prepare($sqlOrders);
 
-                $sqlProducts = "INSERT INTO products (`id`, `name`, `orderId`, `stock`, `details`, `createdAt`) VALUES (?, ?, ?, ?, ?, ?)";
+                $sqlProducts = "INSERT INTO products (`id`, `name`, `order_id`, `stock`, `details`, `created_at`) VALUES (?, ?, ?, ?, ?, ?)";
                 $sthP = $pdo->prepare($sqlProducts);
 
             } catch(PDOException $e) {
@@ -47,7 +47,7 @@
             // Boucle sur chaque ligne du json, pour chaque Customer..
             foreach ($dataDecoded as $dataDecode):
                 { 
-                    dd($dataDecode); 
+                    //dd($dataDecode); 
                     //dd($dataDecode->username);
                     // Pour chacunes des donnnées i.e. chacun des customers, on doit faire un insert dans notre bdd dans une table Customers:              
                     $sthC->execute([ $dataDecode->id, $dataDecode->username, $dataDecode->lastname, $dataDecode->firstname, $dataDecode->address, $dataDecode->profile, $dataDecode->company, $dataDecode->orders, $dataDecode->createdAt ]);

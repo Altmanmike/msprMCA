@@ -36,6 +36,11 @@ class Products
     private $stocks;
 
     /**
+     * @ORM\Column(type="integer")
+     */
+    private $orderId;
+
+    /**
      * @ORM\Column(type="datetime_immutable", nullable=true)
      */
     private $createdAt;
@@ -77,6 +82,18 @@ class Products
     public function setStocks(?int $stocks): self
     {
         $this->stocks = $stocks;
+
+        return $this;
+    }
+
+    public function getOrderId(): ?int
+    {
+        return $this->orderId;
+    }
+
+    public function setOrderId(int $orderId): self
+    {
+        $this->orderId = $orderId;
 
         return $this;
     }
