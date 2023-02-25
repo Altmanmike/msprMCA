@@ -31,13 +31,13 @@
                 $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
                 // Préparons la query une seule fois pour chaque insertion, dans chacune des tables: 
-                $sqlCustomers = "INSERT INTO customers (`id`, `name`, `username`, `lastname`, `firstname`, `address`, `profile`, `company`, `orders`, `created_at`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+                $sqlCustomers = "INSERT INTO `customers` (`id`, `name`, `username`, `lastname`, `firstname`, `address`, `profile`, `company`, `orders`, `created_at`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
                 $sthC = $pdo->prepare($sqlCustomers);
 
-                $sqlOrders = "INSERT INTO orders (`id`, `customer_id`, `created_at`) VALUES (?, ?, ?)";
+                $sqlOrders = "INSERT INTO `orders` (`id`, `customer_id`, `created_at`) VALUES (?, ?, ?)";
                 $sthO = $pdo->prepare($sqlOrders);
 
-                $sqlProducts = "INSERT INTO products (`id`, `name`, `order_id`, `stock`, `details`, `created_at`) VALUES (?, ?, ?, ?, ?, ?)";
+                $sqlProducts = "INSERT INTO `products` (`id`, `name`, `order_id`, `stock`, `details`, `created_at`) VALUES (?, ?, ?, ?, ?, ?)";
                 $sthP = $pdo->prepare($sqlProducts);
 
             } catch(PDOException $e) {
@@ -47,13 +47,13 @@
             // Boucle sur chaque ligne du json, pour chaque Customer..
             foreach ($dataDecoded as $dataDecode):
                 { 
-                    //dd($dataDecode); 
-                    //dd($dataDecode->username);
-                    // Pour chacunes des donnnées i.e. chacun des customers, on doit faire un insert dans notre bdd dans une table Customers:              
-                    $sthC->execute([ $dataDecode->id, $dataDecode->username, $dataDecode->lastname, $dataDecode->firstname, $dataDecode->address, $dataDecode->profile, $dataDecode->company, $dataDecode->orders, $dataDecode->createdAt ]);
+                    //dd(json_encode($dataDecode->address));
+                    // Pour chacunes des donnnées i.e. chacun des customers, on doit faire un insert dans notre bdd dans une table Customers:                                  
+                    $sthC->execute([ $dataDecode->id, $dataDecode->name, $dataDecode->username, $dataDecode->lastName, $dataDecode->firstName, json_encode($dataDecode->address), json_encode($dataDecode->profile), json_encode($dataDecode->company), json_encode($dataDecode->orders), $dataDecode->createdAt ]);
 
                     // On récupère les commandes du client pour les insérer aussi dans notre bdd dans une table Orders:
                     $dataDecodedOrders = $dataDecode->orders;
+                    //dd($dataDecodedOrders);
                     foreach ($dataDecodedOrders as $dataDecodeOrder):
                         {
                             $sthO->execute([ $dataDecodeOrder->id, $dataDecodeOrder->customerId, $dataDecodeOrder->createdAt ]);
@@ -62,11 +62,12 @@
                             $idOrder = $dataDecodeOrder->id;
 
                             // Récupération des produits des commandes du client:
-                            $dataProducts = file_get_contents("https://615f5fb4f7254d0017068109.mockapi.io/api/v1/customers/'$idCustomer'/orders/'$idOrder'/products");
+                            $dataProducts = file_get_contents("https://615f5fb4f7254d0017068109.mockapi.io/api/v1/customers/$idCustomer/orders/$idOrder/products");
+                            //dd($dataProducts);
                             $dataDecodedProducts = json_decode($dataProducts);   
                             foreach ($dataDecodedProducts as $dataDecodedProduct):
                                 {
-                                    $sthP->execute([ $dataDecodedProduct->id, $dataDecodedProduct->name, $dataDecodedProduct->orderId, $dataDecodedProduct->stock, $dataDecodedProduct->details, $dataDecodedProduct->createdAt ]);
+                                    $sthP->execute([ $dataDecodedProduct->id, $dataDecodedProduct->name, $dataDecodedProduct->orderId, $dataDecodedProduct->stock, json_encode($dataDecodedProduct->details), $dataDecodedProduct->createdAt ]);
                                 }
                             endforeach;
                         }
