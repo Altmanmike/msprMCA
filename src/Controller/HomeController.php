@@ -21,9 +21,9 @@ class HomeController extends AbstractController
     {
         /* ************************************** */
         /* * JUSTE POUR VISUALISER LES DONNEES ** */
-        /* ************************************** */
-        //$json = file_get_contents("/test_API_plateform/API-Platform/public/js/customers.json");
-        $json = file_get_contents("js/customers.json");
+        /* ************************************** */        
+        $json = file_get_contents("https://615f5fb4f7254d0017068109.mockapi.io/api/v1/customers");
+        //$json = file_get_contents("js/customers.json");
         //dd($json);
         $dataDecoded = json_decode($json);        
 
@@ -31,5 +31,5 @@ class HomeController extends AbstractController
             'controller_name' => 'HomeController',
             'dataDecoded' => $dataDecoded  
         ]);
-    } 
+    }
 }

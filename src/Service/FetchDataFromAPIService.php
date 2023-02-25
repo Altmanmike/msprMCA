@@ -19,10 +19,10 @@
             $dbPass = '';
 
             // Paramétrage hébergeur perso MySQL
-            //$host = '';
-            //$dbname = '';
-            //$dbUser = '';
-            //$dbPass = '';
+            //$host = '185.98.131.93';
+            //$dbname = 'devin1226832_5v8lu';
+            //$dbUser = 'devin1226832_5v8lu';
+            //$dbPass = 'lfwiwdyo6l';
 
             // Création de la chaîne de caractère de connexion à la bdd:
             try {
@@ -47,7 +47,7 @@
             // Boucle sur chaque ligne du json, pour chaque Customer..
             foreach ($dataDecoded as $dataDecode):
                 { 
-                    //dd($dataDecode); // echo $dataDecode;  
+                    //dd($dataDecode); 
                     // Pour chacunes des donnnées i.e. chacun des customers, on doit faire un insert dans notre bdd dans une table Customers:              
                     $sthC->execute([ $dataDecode['id'], $dataDecode['username'], $dataDecode['lastname'], $dataDecode['firstname'], $dataDecode['address'], $dataDecode['profile'], $dataDecode['company'], $dataDecode['orders'], $dataDecode['createdAt'] ]);
 

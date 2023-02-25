@@ -18,10 +18,10 @@
             $dbPass = '';
 
             // Paramétrage hébergeur perso MySQL
-            //$host = '';
-            //$dbname = '';
-            //$dbUser = '';
-            //$dbPass = '';
+            //$host = '185.98.131.93';
+            //$dbname = 'devin1226832_5v8lu';
+            //$dbUser = 'devin1226832_5v8lu';
+            //$dbPass = 'lfwiwdyo6l';
 
             // FAIRE L'APPEL DU SERVICE TOUS LES 24 HEURES
         }
