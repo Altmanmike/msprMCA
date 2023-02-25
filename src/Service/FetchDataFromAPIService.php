@@ -13,8 +13,8 @@
             $dataDecoded = json_decode($data);     
 
             // Paramétrage local MySQL
-            $host = 'http://localhost:3306';
-            $dbname = 'apiplateform';
+            $host = 'localhost';
+            $dbname = 'apiplatform';
             $dbUser = 'root';
             $dbPass = '';
 
@@ -47,25 +47,26 @@
             // Boucle sur chaque ligne du json, pour chaque Customer..
             foreach ($dataDecoded as $dataDecode):
                 { 
-                    //dd($dataDecode); 
+                    dd($dataDecode); 
+                    //dd($dataDecode->username);
                     // Pour chacunes des donnnées i.e. chacun des customers, on doit faire un insert dans notre bdd dans une table Customers:              
-                    $sthC->execute([ $dataDecode['id'], $dataDecode['username'], $dataDecode['lastname'], $dataDecode['firstname'], $dataDecode['address'], $dataDecode['profile'], $dataDecode['company'], $dataDecode['orders'], $dataDecode['createdAt'] ]);
+                    $sthC->execute([ $dataDecode->id, $dataDecode->username, $dataDecode->lastname, $dataDecode->firstname, $dataDecode->address, $dataDecode->profile, $dataDecode->company, $dataDecode->orders, $dataDecode->createdAt ]);
 
                     // On récupère les commandes du client pour les insérer aussi dans notre bdd dans une table Orders:
-                    $dataDecodedOrders = $dataDecode['orders'];
+                    $dataDecodedOrders = $dataDecode->orders;
                     foreach ($dataDecodedOrders as $dataDecodeOrder):
                         {
-                            $sthO->execute([ $dataDecodeOrder['id'], $dataDecodeOrder['customerId'], $dataDecodeOrder['createdAt'] ]);
+                            $sthO->execute([ $dataDecodeOrder->id, $dataDecodeOrder->customerId, $dataDecodeOrder->createdAt ]);
 
-                            $idCustomer = $dataDecodeOrder['customerId'];
-                            $idOrder = $dataDecodeOrder['id'];
+                            $idCustomer = $dataDecodeOrder->customerId;
+                            $idOrder = $dataDecodeOrder->id;
 
                             // Récupération des produits des commandes du client:
                             $dataProducts = file_get_contents("https://615f5fb4f7254d0017068109.mockapi.io/api/v1/customers/'$idCustomer'/orders/'$idOrder'/products");
                             $dataDecodedProducts = json_decode($dataProducts);   
                             foreach ($dataDecodedProducts as $dataDecodedProduct):
                                 {
-                                    $sthP->execute([ $dataDecodedProduct['id'], $dataDecodedProduct['name'], $dataDecodedProduct['orderId'], $dataDecodedProduct['stock'], $dataDecodedProduct['details'], $dataDecodedProduct['createdAt'] ]);
+                                    $sthP->execute([ $dataDecodedProduct->id, $dataDecodedProduct->name, $dataDecodedProduct->orderId, $dataDecodedProduct->stock, $dataDecodedProduct->details, $dataDecodedProduct->createdAt ]);
                                 }
                             endforeach;
                         }
