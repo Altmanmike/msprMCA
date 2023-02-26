@@ -2,14 +2,15 @@
 
 namespace App\Entity;
 
-use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Core\Annotation\ApiResource;
+//use ApiPlatform\Metadata\ApiResource;
 use App\Repository\OrdersRepository;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
+ * @ApiResource()
  * @ORM\Entity(repositoryClass=OrdersRepository::class)
  */
-#[ApiResource]
 class Orders
 {
     /**
