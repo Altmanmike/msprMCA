@@ -3,6 +3,23 @@
 {% block title %}Home fetch{% endblock %}
 
 {% block body %}
-    <h1 class="container">TEST FETCH DATA</h1>
-    <p id="container"></p>
+
+    <div class="container w-50 mx-auto my-5">
+        <h1 class="bg-primary mt-5 mb-0 py-2 text-center">Inscription par mail à l'API</h1>
+        <h3 class="bg-success py-2 text-center">Récupération de la clé d'authentification par mail</h3>
+
+        <h4 class="my-5 py-5 text-center">S'inscrire par mail (obtenir la clé d'authentification):</h4>
+        {{ form_start(newUserForm) }}
+            {{ form_row(newUserForm.email) }}
+            <button type="submit" class="btn btn-primary btn-lg my-3">Envoyer</button>
+        {{ form_end(newUserForm) }}
+
+        <h4 class="my-5 py-5 text-center">Se connecter (avec la clé d'authentification reçu par mail):</h4>
+        {{ form_start(newKeyForm) }}
+            {{ form_row(newKeyForm.cryptedKey) }}
+            <button type="submit" class="btn btn-primary btn-lg my-3">Envoyer</button>
+        {{ form_end(newKeyForm) }}
+
+    </div>
+
 {% endblock %}
