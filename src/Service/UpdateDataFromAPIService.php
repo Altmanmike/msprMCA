@@ -23,18 +23,6 @@
             $data = file_get_contents("https://615f5fb4f7254d0017068109.mockapi.io/api/v1/customers");
             $dataDecoded = json_decode($data);     
 
-            // Paramétrage local MySQL
-            $host = 'localhost';
-            $dbname = 'apiplatform';
-            $dbUser = 'root';
-            $dbPass = '';
-
-            // Paramétrage hébergeur perso MySQL
-            //$host = '185.98.131.93';
-            //$dbname = 'devin1226832_5v8lu';
-            //$dbUser = 'devin1226832_5v8lu';
-            //$dbPass = 'lfwiwdyo6l';
-
             // Création de la chaîne de caractère de connexion à la bdd:
             try {
                 // Connexion à la bdd:            
