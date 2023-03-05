@@ -8,11 +8,12 @@
     {             
         public function getDataFromAPI() {
 
-            // Récupération des données de l'API pour notre mise à jours
-            $data = file_get_contents("https://615f5fb4f7254d0017068109.mockapi.io/api/v1/customers");
+            // Récupération des données de l'API pour notre mise à jours (NODEJS à try pour éviter le flood)
+            //$data = file_get_contents("https://615f5fb4f7254d0017068109.mockapi.io/api/v1/customers");
+            $data = file_get_contents("js/customers.json");
             $dataDecoded = json_decode($data);     
 
-            // Paramétrage local MySQL
+            // Paramétrage local MySQL (mes id/pass de mon MySQL)
             $host = 'localhost';
             $dbname = 'apiplatform';
             $dbUser = 'root';

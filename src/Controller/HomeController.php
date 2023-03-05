@@ -6,7 +6,7 @@ use App\Entity\Users;
 use App\Form\NewUserFormType;
 use App\Form\NewKeyFormType;
 use App\Repository\UsersRepository;
-use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -15,7 +15,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 class HomeController extends AbstractController
 {
     #[Route('/', name: 'app_home')]
-    public function index(Request $request, EntityManager $entityManager, UsersRepository $usersRepository): Response
+    public function index(Request $request, EntityManagerInterface $entityManager, UsersRepository $usersRepository): Response
     {
         // CAS 1: inscription par mail
         //-----------------------------
@@ -24,15 +24,25 @@ class HomeController extends AbstractController
         $form1->handleRequest($request);
         
         if ($form1->isSubmitted() && $form1->isValid()) { 
-
-            $user1->setEmail(htmlspecialchars(trim($form1->get('userEmail')->getData())));
-            $user1->setCryptedKey("LA_CLE_A_REMPLACER_PAR_UN_TRUC_COOL");
+            $destinataire = htmlspecialchars(trim($form1->get('userEmail')->getData()));
+            $user1->setEmail($destinataire);            
+            $key = substr(str_shuffle(str_repeat('ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789',10)),0,10);
+            $user1->setCryptedKey($key);
 
             $entityManager->persist($user1);
             $entityManager->flush();
 
-            // TODO: Gestion du module mail ici
-
+            // Gestion du module mail: 
+            $expediteur = "no-reply@payetonkawa.fr";         
+            $sujet = "Inscription réussi, voici votre clé d'authentification";            
+            $message = '<div style="margin:auto; padding:200px"><h1 style="margin:20px">Votre clé d\'identification</h1><p>$key</p></div>';
+            // En-têtes de l'email
+            $headers = "From: $destinataire" . "\r\n" .
+                    "Reply-To: $expediteur" . "\r\n" .
+                    "X-Mailer: PHP/" . phpversion();
+            // Envoi de l'email
+            mail($destinataire, $sujet, $message, $headers);
+            //$message = "La clé d'authentification a été envoyée à l'adresse e-mail $email.";
             return $this->redirectToRoute('app_home');
 
         }  
@@ -55,7 +65,7 @@ class HomeController extends AbstractController
 
         return $this->render('home/index.html.twig', [
             'controller_name' => 'HomeController',
-            'newUsersForm' => $form1->createView(),
+            'newUserForm' => $form1->createView(),
             'newKeyForm' => $form2->createView()
         ]);
 
@@ -67,9 +77,10 @@ class HomeController extends AbstractController
     {
         /* ************************************** */
         /* * JUSTE POUR VISUALISER LES DONNEES ** */
-        /* ************************************** */        
-        $json = file_get_contents("https://615f5fb4f7254d0017068109.mockapi.io/api/v1/customers");
-        //$json = file_get_contents("js/customers.json");
+        /* ************************************** */   
+        // Faut trouver une méthode qui enregistrerait la réponse de l'url en .json dans le dossier public.     
+        //$json = file_get_contents("https://615f5fb4f7254d0017068109.mockapi.io/api/v1/customers");
+        $json = file_get_contents("js/customers.json");
         //dd($json);
         $dataDecoded = json_decode($json);        
 

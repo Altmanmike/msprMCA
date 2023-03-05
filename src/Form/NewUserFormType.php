@@ -17,7 +17,7 @@ class NewUserFormType extends AbstractType
         $builder
             ->add('email', EmailType::class, [
                 'attr' => [
-                    'class' => 'form-control my-5',
+                    'class' => 'form-control',
                     'placeholder' => 'Entrer votre mail ex: nom@domaine.fr'
                 ],
                 'constraints' => [
