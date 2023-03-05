@@ -13,6 +13,7 @@ class DataController extends AbstractController
     #[Route('/data-get-from-api', name: 'app_dataGetFromAPI')]
     public function dataGetFromAPI(FetchDataFromAPIService $fetchDataFromAPIService): Response
     {
+        $result = '';
         try {            
             $fetchDataFromAPIService->getDataFromAPI();
             $result = "La base de donnée a correctement été remplie par les données récupérées de l'API";
@@ -29,6 +30,7 @@ class DataController extends AbstractController
     #[Route('/data-update-from-api', name: 'app_dataUpdateFromAPI')]
     public function dataUpdateFromAPI(ResetDataFromAPIService $resetDataFromAPIService, FetchDataFromAPIService $fetchDataFromAPIService): Response
     {
+        $result = '';
         try {
             $resetDataFromAPIService->resetTablesAndIncrements();
             $fetchDataFromAPIService->getDataFromAPI();

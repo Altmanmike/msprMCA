@@ -17,23 +17,41 @@ class HomeController extends AbstractController
     #[Route('/', name: 'app_home')]
     public function index(Request $request, EntityManagerInterface $entityManager, UsersRepository $usersRepository): Response
     {
+        if( !isset($_GET['m']) ) {
+            $m = '';
+        } else {
+            $m = $_GET['m'];
+        }       
+
         // CAS 1: inscription par mail
         //-----------------------------
         $user1 = new Users();         
         $form1 = $this->createForm(NewUserFormType::class, $user1);
         $form1->handleRequest($request);
         
-        if ($form1->isSubmitted() && $form1->isValid()) { 
-            $destinataire = htmlspecialchars(trim($form1->get('userEmail')->getData()));
+        if ($form1->isSubmitted() && $form1->isValid()) {             
+            $destinataire = htmlspecialchars(trim($form1->get('email')->getData()));
+            // Check si le mail est déjà présent dans la base
+            $users = $usersRepository->findAll();                       
+            foreach($users as $u): {
+                if($destinataire == $u->getEmail()) {                    
+                    $m = "Un compte existe déjà pour cet utilisateur";                    
+                    return $this->redirectToRoute('app_home', array(
+                        'm' => $m
+                    ));
+                }
+            }
+            endforeach;
+            
             $user1->setEmail($destinataire);            
-            $key = substr(str_shuffle(str_repeat('ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789',10)),0,10);
+            $key = substr(str_shuffle(str_repeat('ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789',10)),0,25);
             $user1->setCryptedKey($key);
 
             $entityManager->persist($user1);
             $entityManager->flush();
 
-            // Gestion du module mail: 
-            $expediteur = "no-reply@payetonkawa.fr";         
+            // Gestion du module mail:             
+            $expediteur = "altman.mikeepsi@gmail.fr";  //"no-reply@payetonkawa.fr";         
             $sujet = "Inscription réussi, voici votre clé d'authentification";            
             $message = '<div style="margin:auto; padding:200px"><h1 style="margin:20px">Votre clé d\'identification</h1><p>$key</p></div>';
             // En-têtes de l'email
@@ -42,7 +60,7 @@ class HomeController extends AbstractController
                     "X-Mailer: PHP/" . phpversion();
             // Envoi de l'email
             mail($destinataire, $sujet, $message, $headers);
-            //$message = "La clé d'authentification a été envoyée à l'adresse e-mail $email.";
+            //$mess_en_pop_a_faire = "La clé d'authentification a été envoyée à l'adresse e-mail $email.";
             return $this->redirectToRoute('app_home');
 
         }  
@@ -62,11 +80,12 @@ class HomeController extends AbstractController
                 return $this->redirectToRoute('app_home');
             }
         }
-
+        //dd($m);
         return $this->render('home/index.html.twig', [
             'controller_name' => 'HomeController',
             'newUserForm' => $form1->createView(),
-            'newKeyForm' => $form2->createView()
+            'newKeyForm' => $form2->createView(),
+            'm' => $m           
         ]);
 
 
