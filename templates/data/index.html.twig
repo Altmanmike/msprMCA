@@ -20,27 +20,27 @@
                 <tr>
                     <th scope="row" class="text-center">1</th>
                     <td class="text-center"><strong>Récupération des données à partir de l'API MOOC (à faire)</strong></td>
-                    <td class="text-center"><a href="{{ path("app_dataGetJSONFromAPI")  }}" ><i class="fa fa-floppy-o" aria-hidden="true"></i></a></td>
+                    <td class="text-center"><a href="{{ path("app_dataGetJsonFromAPI")  }}" ><i class="fa fa-floppy-o" aria-hidden="true"></i></a></td>
                 </tr>
                 <tr>
-                    <th scope="row" class="text-center">1</th>
+                    <th scope="row" class="text-center">2</th>
                     <td class="text-center"><strong>Première insertion des données à partir du fichier json</strong></td>
                     <td class="text-center"><a href="{{ path("app_dataSetFromAPI")  }}" ><i class="fa fa-table" aria-hidden="true"></i></a></td>
                 </tr>
                 <tr>
-                    <th scope="row" class="text-center">2</th>
+                    <th scope="row" class="text-center">3</th>
                     <td class="text-center"><strong>Mise à jours de toutes les données (vide les tables et charge le json)</strong></td>
                     <td class="text-center"><a href="{{ path("app_dataUpdateFromAPI")  }}" ><i class="fa fa-trash" aria-hidden="true"></i></a></td>
                 </tr>
                 <tr>
-                    <th scope="row" class="text-center">2</th>
+                    <th scope="row" class="text-center">4</th>
                     <td class="text-center"><strong>Effacer des données des tables non-Users(on sépare les deux services)</strong></td>
                     <td class="text-center"><a href="{{ path("app_dataResetFast")  }}" ><i class="fa fa-trash" aria-hidden="true"></i></a></td>
                 </tr>
                 <tr>
-                    <th scope="row" class="text-center">2</th>
+                    <th scope="row" class="text-center">5</th>
                     <td class="text-center"><strong>Effacer des données de la table Users (clients et revendeurs)</strong></td>
-                    <td class="text-center"><a href="{{ path("app_dataResetFast")  }}" ><i class="fa fa-trash" aria-hidden="true"></i></a></td>
+                    <td class="text-center"><a href="{{ path("app_dataResetUsers")  }}" ><i class="fa fa-trash" aria-hidden="true"></i></a></td>
                 </tr>
             </tbody>
         </table>       

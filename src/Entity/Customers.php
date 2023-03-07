@@ -7,7 +7,7 @@ use ApiPlatform\Core\Annotation\ApiResource;
 use App\Repository\CustomersRepository;
 use Doctrine\ORM\Mapping as ORM;
 
-/** 
+/**
  * @ApiResource()
  * @ORM\Entity(repositoryClass=CustomersRepository::class)
  */

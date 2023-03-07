@@ -22,7 +22,8 @@ class DataController extends AbstractController
     public function dateGetJsonFromAPI(): Response
     {
         // TODO: Récupérer les données de l'API MOOC au format .json  à placer dans public/js/ pour l'instant en local
-        return $this->redirectToRoute('app_dataJsonFile'); 
+        return $this->redirectToRoute('app_dataHome'); 
+        //return $this->redirectToRoute('app_dataJsonFile'); 
     } 
 
     #[Route('/data-set-from-api', name: 'app_dataSetFromAPI')]
