@@ -2,11 +2,12 @@
 
 namespace App\Controller;
 
+use App\Service\GuzzleDataFromAPIService;
 use App\Service\FetchDataFromAPIService;
 use App\Service\ResetDataFromAPIService;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class DataController extends AbstractController
 {        
@@ -18,16 +19,22 @@ class DataController extends AbstractController
         ]);
     } 
 
-    #[Route('/data-get-json', name: 'app_dataGetJsonFromAPI')]
+    /*#[Route('/data-get-json', name: 'app_dataGetJsonFromAPI')]
     public function dateGetJsonFromAPI(): Response
     {
         // TODO: Récupérer les données de l'API MOOC au format .json  à placer dans public/js/ pour l'instant en local
-        return $this->redirectToRoute('app_dataHome'); 
+        //return $this->redirectToRoute('app_dataHome'); 
         //return $this->redirectToRoute('app_dataJsonFile'); 
-    } 
 
+        return $this->render('data/fetch&blob.html.twig', [
+            'controller_name' => 'DataController'
+        ]);
+
+    } */
+
+    /********************************************************************************************************* */
     #[Route('/data-set-from-api', name: 'app_dataSetFromAPI')]
-    public function dataGetFromAPI(FetchDataFromAPIService $fetchDataFromAPIService): Response
+    public function dataSetFromAPI(FetchDataFromAPIService $fetchDataFromAPIService): Response
     {
         $result = '';
         try {            
@@ -42,6 +49,24 @@ class DataController extends AbstractController
             'result' => $result
         ]);
     }
+
+    #[Route('/data-setG-from-api', name: 'app_dataSetGFromAPI')]
+    public function dataSetGFromAPI(GuzzleDataFromAPIService $guzzleDataFromAPIService): Response
+    {
+        $result = '';
+        try {            
+            $guzzleDataFromAPIService->guzzleDataFromAPI();
+            $result = "La base de donnée a correctement été remplie par les données récupérées de l'API";
+        } catch(\Exception $e) {
+            $result = $e->getMessage();
+        }        
+
+        return $this->render('data/update.html.twig', [
+            'controller_name' => 'DataController',
+            'result' => $result
+        ]);
+    }
+    /********************************************************************************************************* */
 
     #[Route('/data-update-from-api', name: 'app_dataUpdateFromAPI')]
     public function dataUpdateFromAPI(ResetDataFromAPIService $resetDataFromAPIService, FetchDataFromAPIService $fetchDataFromAPIService): Response

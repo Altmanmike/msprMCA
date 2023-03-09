@@ -19,13 +19,13 @@
             <tbody>
                 <tr>
                     <th scope="row" class="text-center">1</th>
-                    <td class="text-center"><strong>Récupération des données à partir de l'API MOOC (à faire)</strong></td>
-                    <td class="text-center"><a href="{{ path("app_dataGetJsonFromAPI")  }}" ><i class="fa fa-floppy-o" aria-hidden="true"></i></a></td>
+                    <td class="text-center"><strong>Récupération des données à partir de l'API MOOC (fichier customers.json)</strong></td>
+                    <td class="text-center"><a href="" onclick="saveAPICustomersMooc()"><i class="fa fa-floppy-o" aria-hidden="true"></i></a></td>
                 </tr>
                 <tr>
                     <th scope="row" class="text-center">2</th>
-                    <td class="text-center"><strong>Première insertion des données à partir du fichier json</strong></td>
-                    <td class="text-center"><a href="{{ path("app_dataSetFromAPI")  }}" ><i class="fa fa-table" aria-hidden="true"></i></a></td>
+                    <td class="text-center"><strong>Récupération des données à partir de l'API MOOC (fichier products.json)</strong></td>
+                    <td class="text-center"><a href="" onclick="saveAPIProductsMooc()"><i class="fa fa-floppy-o" aria-hidden="true"></i></a></td>
                 </tr>
                 <tr>
                     <th scope="row" class="text-center">3</th>
@@ -46,4 +46,11 @@
         </table>       
     </div>
 
+    <div id="eventoutput_SaveAPIJson" class="mx-auto">        
+    </div>  
+
+{% endblock %}
+{% block javascripts %}
+        {# <script type="text/javascript" src="{{ asset('js/fetchAndBlobCustomers.js') }}" defer></script> #}
+        <script type="text/javascript" src="{{ asset('js/fetchAndBlobProducts.js') }}" defer></script>
 {% endblock %}
