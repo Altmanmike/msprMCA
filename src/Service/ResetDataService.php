@@ -4,7 +4,7 @@
     use PDO;
     use PDOException;
 
-    class ResetDataFromAPIService
+    class ResetDataService
     {
         public function resetTablesAndIncrements() {
 
@@ -91,9 +91,5 @@
             } catch(PDOException $e) {
                 die("Connexion MySQL local failed: " . $e->getMessage());
             }           
-        }
-
-
-
-        
+        }        
     }

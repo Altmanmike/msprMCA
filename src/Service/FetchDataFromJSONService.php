@@ -4,9 +4,9 @@
     use PDO;
     use PDOException;
 
-    class FetchDataFromAPIService
+    class FetchDataFromJSONService
     {             
-        public function getDataFromAPI() {
+        public function getDataFromJSON() {
 
             // Récupération des données de l'API pour notre mise à jours (NODEJS à try pour éviter le flood)
             //$data = file_get_contents("https://615f5fb4f7254d0017068109.mockapi.io/api/v1/customers");
@@ -64,25 +64,18 @@
                     foreach ($dataDecodedOrders as $dataDecodeOrder):
                         {
                             $sthO->execute([ $dataDecodeOrder->id, $dataDecodeOrder->customerId, $dataDecodeOrder->createdAt ]);
-
-                            $idCustomer = $dataDecodeOrder->customerId;
-                            $idOrder = $dataDecodeOrder->id;
-
-                            // Récupération des produits des commandes du client:
-                            $dataProducts = file_get_contents("https://615f5fb4f7254d0017068109.mockapi.io/api/v1/customers/$idCustomer/orders/$idOrder/products");
-                            //dd($dataProducts);                         
-                            
-                            $dataDecodedProducts = json_decode($dataProducts);   
-                            foreach ($dataDecodedProducts as $dataDecodedProduct):
-                                {
-                                    $sthP->execute([ $dataDecodedProduct->id, $dataDecodedProduct->name, $dataDecodedProduct->orderId, $dataDecodedProduct->stock, json_encode($dataDecodedProduct->details), $dataDecodedProduct->createdAt ]);
-                                }
-                            endforeach;
-
-                            // TODO: gestion d'un sleep pour qu'il n'y est pas de flood (too many request)
-                            sleep(1);
                         }
                     endforeach;                   
+                }
+            endforeach;
+
+            // Récupération des produits des commandes du client:
+            $dataProducts = file_get_contents("js/products.json");
+            //dd($dataProducts);
+            $dataDecodedProducts = json_decode($dataProducts);   
+            foreach ($dataDecodedProducts as $dataDecodedProduct):
+                {
+                    $sthP->execute([ $dataDecodedProduct->id, $dataDecodedProduct->name, $dataDecodedProduct->orderId, $dataDecodedProduct->stock, json_encode($dataDecodedProduct->details), $dataDecodedProduct->createdAt ]);
                 }
             endforeach;
         }

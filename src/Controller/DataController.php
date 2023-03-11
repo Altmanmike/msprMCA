@@ -2,38 +2,37 @@
 
 namespace App\Controller;
 
-use App\Service\GuzzleDataFromAPIService;
 use App\Service\FetchDataFromAPIService;
-use App\Service\ResetDataFromAPIService;
+use App\Service\ResetDataService;
+use App\Repository\CryptedKeysRepository;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class DataController extends AbstractController
 {        
+
     #[Route('/data', name: 'app_dataHome')]
-    public function index(): Response
+    public function index(CryptedKeysRepository $cryptedKeysRepository): Response
     {
+        $cryptedKeys = $cryptedKeysRepository->findAll();
+
         return $this->render('data/index.html.twig', [
-            'controller_name' => 'DataController'
+            'controller_name' => 'DataController',
+            'cryptedKeys' => $cryptedKeys
         ]);
     } 
 
-    /*#[Route('/data-get-json', name: 'app_dataGetJsonFromAPI')]
-    public function dateGetJsonFromAPI(): Response
+    #[Route('/data/json', name: 'app_dataJson')]
+    public function dataJson(): Response
     {
-        // TODO: Récupérer les données de l'API MOOC au format .json  à placer dans public/js/ pour l'instant en local
-        //return $this->redirectToRoute('app_dataHome'); 
-        //return $this->redirectToRoute('app_dataJsonFile'); 
-
-        return $this->render('data/fetch&blob.html.twig', [
-            'controller_name' => 'DataController'
+        return $this->render('data/update.html.twig', [
+            'controller_name' => 'DataController',
         ]);
-
-    } */
+    } 
 
     /********************************************************************************************************* */
-    #[Route('/data-set-from-api', name: 'app_dataSetFromAPI')]
+    /*#[Route('/data-get-from-api', name: 'app_dataGetFromAPI')]
     public function dataSetFromAPI(FetchDataFromAPIService $fetchDataFromAPIService): Response
     {
         $result = '';
@@ -44,54 +43,20 @@ class DataController extends AbstractController
             $result = $e->getMessage();
         }        
 
-        return $this->render('data/update.html.twig', [
+        return $this->render('data/index.html.twig', [
             'controller_name' => 'DataController',
             'result' => $result
         ]);
-    }
+    }*/
 
-    #[Route('/data-setG-from-api', name: 'app_dataSetGFromAPI')]
-    public function dataSetGFromAPI(GuzzleDataFromAPIService $guzzleDataFromAPIService): Response
-    {
-        $result = '';
-        try {            
-            $guzzleDataFromAPIService->guzzleDataFromAPI();
-            $result = "La base de donnée a correctement été remplie par les données récupérées de l'API";
-        } catch(\Exception $e) {
-            $result = $e->getMessage();
-        }        
-
-        return $this->render('data/update.html.twig', [
-            'controller_name' => 'DataController',
-            'result' => $result
-        ]);
-    }
     /********************************************************************************************************* */
 
-    #[Route('/data-update-from-api', name: 'app_dataUpdateFromAPI')]
-    public function dataUpdateFromAPI(ResetDataFromAPIService $resetDataFromAPIService, FetchDataFromAPIService $fetchDataFromAPIService): Response
-    {
-        $result = '';
-        try {
-            $resetDataFromAPIService->resetTablesAndIncrements();
-            $fetchDataFromAPIService->getDataFromAPI();
-            $result = "La base de données a correctement été mise à jour par l'API";
-        } catch(\Exception $e) {
-            $result = $e->getMessage();
-        }        
-
-        return $this->render('data/update.html.twig', [
-            'controller_name' => 'DataController',
-            'result' => $result
-        ]);
-    }
-
     #[Route('/data-reset-fast', name: 'app_dataResetFast')]
-    public function dataResetFast(ResetDataFromAPIService $resetDataFromAPIService, FetchDataFromAPIService $fetchDataFromAPIService): Response
+    public function dataResetFast(ResetDataService $resetDataService): Response
     {
         $result = '';
         try {
-            $resetDataFromAPIService->resetTablesAndIncrements();            
+            $resetDataService->resetTablesAndIncrements();            
             $result = "Les données de la base ont correctement été effacées et réinitialisées";
         } catch(\Exception $e) {
             $result = $e->getMessage();
@@ -104,11 +69,11 @@ class DataController extends AbstractController
     }
 
     #[Route('/data-reset-users', name: 'app_dataResetUsers')]
-    public function dataResetUsers(ResetDataFromAPIService $resetDataFromAPIService, FetchDataFromAPIService $fetchDataFromAPIService): Response
+    public function dataResetUsers(ResetDataService $resetDataService): Response
     {
         $result = '';
         try {
-            $resetDataFromAPIService->resetUsersTablesAndIncrements();            
+            $resetDataService->resetUsersTablesAndIncrements();            
             $result = "Les données de la table Users ont correctement été effacées et réinitialisées";
         } catch(\Exception $e) {
             $result = $e->getMessage();

@@ -3,10 +3,11 @@
 namespace App\Controller;
 
 use App\Entity\Users;
-use App\Form\NewUserFormType;
 use App\Form\NewKeyFormType;
+use App\Form\NewUserFormType;
 use App\Repository\UsersRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use App\Repository\CryptedKeysRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -15,7 +16,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 class HomeController extends AbstractController
 {
     #[Route('/', name: 'app_home')]
-    public function index(Request $request, EntityManagerInterface $entityManager, UsersRepository $usersRepository): Response
+    public function index(Request $request, EntityManagerInterface $entityManager, UsersRepository $usersRepository,CryptedKeysRepository $cryptedKeysRepo): Response
     {
         if( !isset($_GET['m']) ) {
             $m = '';
@@ -43,14 +44,13 @@ class HomeController extends AbstractController
             }
             endforeach;
             
-            $user1->setEmail($destinataire);            
-            $key = substr(str_shuffle(str_repeat('ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789',10)),0,25);
-            $user1->setCryptedKey($key);
-
+            $user1->setEmail($destinataire);         
+            $user1->setCreatedAt(new \DateTimeImmutable());      
+            
             $entityManager->persist($user1);
             $entityManager->flush();
 
-            // Gestion du module mail:             
+            // TODO: Gestion du module mail:             
             $expediteur = "altman.mikeepsi@gmail.fr";  //"no-reply@payetonkawa.fr";         
             $sujet = "Inscription réussi, voici votre clé d'authentification";            
             $message = '<div style="margin:auto; padding:200px"><h1 style="margin:20px">Votre clé d\'identification</h1><p>$key</p></div>';
@@ -67,12 +67,14 @@ class HomeController extends AbstractController
         
         // CAS 2: connexion par clé d'authentification
         //--------------------------------------------
+        $keys = $cryptedKeysRepo->findAll();       
+
         $user2 = new Users();
         $form2 = $this->createForm(NewKeyFormType::class, $user2);
-        $form2->handleRequest($request);
+        $form2->handleRequest($request);        
 
-        if ($form2->isSubmitted() && $form2->isValid()) {
-            if( $form2->get('cryptedKey')->getData() == $usersRepository->getCrytedKey()) {
+        if ($form2->isSubmitted() && $form2->isValid()) {            
+            if(in_array($form2->get('cryptedKey')->getData(), $keys)) {
                 // Une fois authentifié le revendeur est redirigé vers l'API
                 return $this->redirectToRoute('app_dataHome');
             } else {

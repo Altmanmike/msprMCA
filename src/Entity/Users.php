@@ -6,6 +6,7 @@ use ApiPlatform\Core\Annotation\ApiResource;
 //use ApiPlatform\Metadata\ApiResource;
 use App\Repository\UsersRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * @ApiResource()
@@ -26,9 +27,14 @@ class Users
     private $email;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="json")
      */
-    private $cryptedKey;
+    private $roles = [];
+
+    /**
+     * @ORM\Column(type="datetime_immutable", options={"default": "CURRENT_TIMESTAMP"})
+     */
+    private $createdAt;
 
     public function getId(): ?int
     {
@@ -46,15 +52,26 @@ class Users
 
         return $this;
     }
-
-    public function getCryptedKey(): ?string
+    
+    /**
+     * @see UserInterface
+     */    
+    public function getRoles(): array
     {
-        return $this->cryptedKey;
+        $roles = $this->roles;        
+        $roles[] = 'ROLE_USER';
+
+        return array_unique($roles);
     }
 
-    public function setCryptedKey(string $cryptedKey): self
+    public function getCreatedAt(): ?\DateTimeImmutable
     {
-        $this->cryptedKey = $cryptedKey;
+        return $this->createdAt;
+    }
+
+    public function setCreatedAt(?\DateTimeImmutable $createdAt): self
+    {
+        $this->createdAt = $createdAt;
 
         return $this;
     }
