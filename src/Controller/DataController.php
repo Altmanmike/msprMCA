@@ -2,8 +2,10 @@
 
 namespace App\Controller;
 
-use App\Service\FetchDataFromAPIService;
+use App\Service\FetchDataFromJSONService;
 use App\Service\ResetDataService;
+use App\Service\CryptedKeysService;
+use App\Service\FetchDataFromAPIService;
 use App\Repository\CryptedKeysRepository;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -13,13 +15,18 @@ class DataController extends AbstractController
 {        
 
     #[Route('/data', name: 'app_dataHome')]
-    public function index(CryptedKeysRepository $cryptedKeysRepository): Response
-    {
-        $cryptedKeys = $cryptedKeysRepository->findAll();
+    public function index(): Response
+    {/*
+        if(!$CryptedKeysService->isCryptedKeys()); {
+            $CryptedKeysService->createCryptedKeys();
+        }
+
+        $cryptedKeys = $cryptedKeysRepository->findAll();        
+        $cryptedKeyR = $cryptedKeys[0];
+        $cryptedKeyW = $cryptedKeys[1];   */     
 
         return $this->render('data/index.html.twig', [
             'controller_name' => 'DataController',
-            'cryptedKeys' => $cryptedKeys
         ]);
     } 
 
@@ -31,25 +38,21 @@ class DataController extends AbstractController
         ]);
     } 
 
-    /********************************************************************************************************* */
-    /*#[Route('/data-get-from-api', name: 'app_dataGetFromAPI')]
-    public function dataSetFromAPI(FetchDataFromAPIService $fetchDataFromAPIService): Response
+    #[Route('/data/insert', name: 'app_dataInsert')]
+    public function dataInsert(FetchDataFromJSONService $fetchDataFromJSONService): Response
     {
         $result = '';
         try {            
-            $fetchDataFromAPIService->getDataFromAPI();
+            $fetchDataFromJSONService->getDataFromJSON();
             $result = "La base de donnée a correctement été remplie par les données récupérées de l'API";
         } catch(\Exception $e) {
             $result = $e->getMessage();
         }        
-
         return $this->render('data/index.html.twig', [
             'controller_name' => 'DataController',
-            'result' => $result
-        ]);
-    }*/
-
-    /********************************************************************************************************* */
+            'result' => $result,
+        ]);    
+    } 
 
     #[Route('/data-reset-fast', name: 'app_dataResetFast')]
     public function dataResetFast(ResetDataService $resetDataService): Response
@@ -62,9 +65,9 @@ class DataController extends AbstractController
             $result = $e->getMessage();
         }        
 
-        return $this->render('data/update.html.twig', [
+        return $this->render('data/index.html.twig', [
             'controller_name' => 'DataController',
-            'result' => $result
+            'result' => $result,
         ]);
     }
 
@@ -79,9 +82,9 @@ class DataController extends AbstractController
             $result = $e->getMessage();
         }        
 
-        return $this->render('data/update.html.twig', [
+        return $this->render('data/index.html.twig', [
             'controller_name' => 'DataController',
-            'result' => $result
+            'result' => $result,
         ]);
     }   
 }

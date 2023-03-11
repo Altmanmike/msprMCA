@@ -5,19 +5,27 @@ namespace App\Entity;
 use App\Repository\CryptedKeysRepository;
 use Doctrine\ORM\Mapping as ORM;
 
-#[ORM\Entity(repositoryClass: CryptedKeysRepository::class)]
+/**
+ * @ORM\Entity(repositoryClass=CryptedKeysRepository::class)
+ */
 class CryptedKeys
 {
-    #[ORM\Id]
-    #[ORM\GeneratedValue]
-    #[ORM\Column]
-    private ?int $id = null;
+    /**
+     * @ORM\Id
+     * @ORM\GeneratedValue
+     * @ORM\Column(type="integer")
+     */
+    private $id;
 
-    #[ORM\Column(length: 255)]
-    private ?string $Nom = null;
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $Nom;
 
-    #[ORM\Column(length: 255)]
-    private ?string $Cle = null;
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $Cle;
 
     public function getId(): ?int
     {

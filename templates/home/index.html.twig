@@ -16,11 +16,11 @@
         {{ form_end(newUserForm) }}
 
         <h4 class="mt-4 mb-2 text-center">Se connecter (avec la clé d'authentification reçu par mail):</h4>
-        {{ form_start(newKeyForm) }}
-            {{ form_row(newKeyForm.cryptedKey) }}
+        <form method="POST" action="">            
+            <label class="form-label my-2">Clé reçu par mail</label>
+            <input class="form-control" type="password" name"cryptedKey" id="cryptedKey" placeholder="Veuillez entre votre clé" required>
             <button type="submit" class="btn btn-primary my-3">Envoyer</button>
-        {{ form_end(newKeyForm) }}
-
+        </form>
     </div>
 
 {% endblock %}

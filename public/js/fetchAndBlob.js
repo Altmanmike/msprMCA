@@ -1,5 +1,6 @@
 'use strict'; 
 
+// Code à exécuter ici        
 /************************************************* CODE GET API(s) *********************************************************/
 let dataMooc = "https://615f5fb4f7254d0017068109.mockapi.io/api/v1/customers";
 let customers = new Array(); 
@@ -65,9 +66,9 @@ function sleep(milliseconds) {
     const date = Date.now();
     let currentDate = null;
     do {
-      currentDate = Date.now();
+    currentDate = Date.now();
     } while (currentDate - date < milliseconds);
-  }
+}
 
 /************************************************* EXTRACTION JSON *************************************************/
 let saveAPICustomersMooc = () => {
@@ -91,6 +92,8 @@ let saveAPICustomersMooc = () => {
         document.body.appendChild(newLink);
     }     
     newLink.click();
+    //URL.revokeObjectURL(url);
+    //window.stop();
 }	
 
 let saveAPIProductsMooc = () => {
@@ -113,7 +116,13 @@ let saveAPIProductsMooc = () => {
         newLink.style.display = "none";
         document.body.appendChild(newLink);
     }     
-    newLink.click();
-}	
+    newLink.click(); 
+    //URL.revokeObjectURL(url);
+    //window.stop();
+}
+
+
+
+
 
 
